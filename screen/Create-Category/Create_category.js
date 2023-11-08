@@ -12,21 +12,21 @@ const Create_Category = ({ navigation, onAddCategory }) => {
         if (newCategoryName) {
           try {
             
-            const existingCategories = await AsyncStorage.getItem('categories');
-            const categories = existingCategories ? JSON.parse(existingCategories) : [];
+            // const existingCategories = await AsyncStorage.getItem('categories');
+            // const categories = existingCategories ? JSON.parse(existingCategories) : [];
       
             
-            const newCategory = {
-              c_name: newCategoryName,
-              key: categories.length + 1,
-            };
-            categories.push(newCategory);
+            // const newCategory = {
+            //   c_name: newCategoryName,
+            //   key: categories.length + 1,
+            // };
+            // categories.push(newCategory);
       
             
-            await AsyncStorage.setItem('categories', JSON.stringify(categories));
+            // await AsyncStorage.setItem('categories', JSON.stringify(categories));
             
             
-            setNewCategoryName('');
+            // setNewCategoryName('');
             
           } catch (error) {
             console.error('Error adding category:', error);

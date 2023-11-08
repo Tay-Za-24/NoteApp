@@ -1,26 +1,37 @@
 import { View, Text, TouchableOpacity, TextInput, FlatList } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import home_styles from "../Home/home_style";
 import note_create_styles from "./create_note_style.js";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RadioButton from "./components/Radio_button.js";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Create_note = ({ navigation }) => {
-  const [radio_categories] = useState([
-    { c_name: "Important", key: 1 },
-    { c_name: "To-Do lists", key: 2 },
-    { c_name: "Lecture Notes", key: 3 },
-    { c_name: "Shopping-list", key: 4 },
-  ]);
-
   const [selectedCategory, setSelectedCategory] = useState(1);
   const [title, setTitle] = useState('');
+  const [noteList, setNoteList] = useState([])
   const [detail, setDetail] = useState('');
 
   const navigate_to_home = () => {
     navigation.navigate("Home");
   };
+
+  useEffect(() => {
+    getNoteList()
+  })
+
+  const getNoteList = async () => {
+    const noteList = await AsyncStorage.getItem("noteList").then(res => JSON.parse(res))
+    setNoteList([...noteList])
+  }
+
+
+  const handleCreate = () => {
+    const noteData = { id: noteList.length + 1, header: title, text: detail, categoryId: selectedCategory }
+    console.log(noteData);
+    AsyncStorage.setItem("noteList", JSON.stringify([...noteList, noteData]))
+    navigation.navigate("Home")
+  }
 
   const isButtonDisabled = !(title && detail && selectedCategory);
 
@@ -77,12 +88,19 @@ const Create_note = ({ navigation }) => {
       {/* note */}
 
       <View>
-        <TouchableOpacity disabled={isButtonDisabled}>
+        <TouchableOpacity disabled={isButtonDisabled} onPress={handleCreate}>
           <Text style={[note_create_styles.create_btn, isButtonDisabled ? { opacity: 0.5 } : null]}>Create</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
+
+const radio_categories = [
+  { c_name: "Important", key: 1 },
+  { c_name: "To-Do lists", key: 2 },
+  { c_name: "Lecture Notes", key: 3 },
+  { c_name: "Shopping-list", key: 4 },
+];
 
 export default Create_note;

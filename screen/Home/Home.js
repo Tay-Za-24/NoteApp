@@ -1,29 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import home_styles from './home_style';
 import { CategoryColors } from '../../util/color';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 
 const Home = ({ navigation }) => {
   const [text, setText] = useState('');
+  const [noteList, setNoteList] = useState([])
   const [activeCategory, setActiveCategory] = useState('All');
+  const isFocus = useIsFocused()
 
-  const categories = [
-    { c_name: 'All', key: 1 },
-    { c_name: 'Important', key: 2 },
-    { c_name: 'Lecture Notes', key: 3 },
-    { c_name: 'To-Do lists', key: 4 },
-    { c_name: 'Shopping-list', key: 5 },
-  ];
+  useEffect(() => {
+    // AsyncStorage.setItem("noteList", JSON.stringify(note_data))
+    isFocus && true && getNoteList()
+  }, [isFocus])
 
-  const note_data = [
-    { id: 1, header: 'Team Meeting', text: 'Hello fdfasdf dfdsfdffdfdsfdsfdfdf...' },
-    { id: 2, header: 'AAA', text: 'Hello fdfasdf dfdsfdffdfdsfdsfdfdf...' },
-    { id: 3, header: 'Shopping List', text: 'Hello fdfasdf dfdsfdffdfdsfdsfdfdf...' },
-    { id: 4, header: 'Assignment 1', text: 'Hello fdfasdf dfdsfdffdfdsfdsfdfdf...' },
-    { id: 5, header: 'Notes', text: 'Hello fdfasdf dfdsfdffdfdsfdsfdfdf...' },
-  ];
+  const getNoteList = async () => {
+    const noteList = await AsyncStorage.getItem("noteList").then(res => JSON.parse(res))
+    setNoteList([...noteList])
+  }
 
   const handleTextChange = (newText) => {
     setText(newText);
@@ -46,7 +44,7 @@ const Home = ({ navigation }) => {
   };
 
   const addCategory = (newCategory) => {
-    
+
   };
 
   const getNoteBackgroundColor = (noteIndex) => {
@@ -91,9 +89,9 @@ const Home = ({ navigation }) => {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
       >
-        {categories.map((item) => (
+        {categories.map((item, idx) => (
           <TouchableOpacity
-            key={item.key}
+            key={idx}
             onPress={() => handleCategoryClick(item.c_name)}
           >
             <Text
@@ -115,7 +113,7 @@ const Home = ({ navigation }) => {
 
       <View style={home_styles.notes_container}>
         <FlatList
-          data={filteredNotes}
+          data={noteList}
           renderItem={({ item, index }) => (
             <View
               style={[
@@ -142,3 +140,20 @@ const Home = ({ navigation }) => {
 };
 
 export default Home;
+
+
+const categories = [
+  { c_name: 'All', key: 1 },
+  { c_name: 'Important', key: 2 },
+  { c_name: 'Lecture Notes', key: 3 },
+  { c_name: 'To-Do lists', key: 4 },
+  { c_name: 'Shopping-list_Test', key: 5 },
+];
+
+const note_data = [
+  { id: 1, header: 'Team Meeting', text: 'Hello fdfasdf dfdsfdffdfdsfdsfdfdf...', categoryId: 1 },
+  { id: 2, header: 'AAA', text: 'Hello fdfasdf dfdsfdffdfdsfdsfdfdf...', categoryId: 1 },
+  { id: 3, header: 'Shopping List', text: 'Hello fdfasdf dfdsfdffdfdsfdsfdfdf...', categoryId: 1 },
+  { id: 4, header: 'Assignment 1', text: 'Hello fdfasdf dfdsfdffdfdsfdsfdfdf...', categoryId: 1 },
+  { id: 5, header: 'Notes', text: 'Hello fdfasdf dfdsfdffdfdsfdsfdfdf...', categoryId: 1 },
+];
