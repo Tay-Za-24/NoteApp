@@ -8,14 +8,29 @@ const Create_Category = ({ navigation, onAddCategory }) => {
     const [newCategoryName, setNewCategoryName] = useState('');
     const [title, setTitle] = useState('');
 
-    const handleAddCategory = () => {
+    const handleAddCategory = async () => {
         if (newCategoryName) {
-          const newCategory = {
-            c_name: newCategoryName,
-            key: radioCategories.length + 1, // Assign a unique key
-          };
-          onAddCategory(newCategory);
-          setNewCategoryName(''); // Clear the input field
+          try {
+            
+            const existingCategories = await AsyncStorage.getItem('categories');
+            const categories = existingCategories ? JSON.parse(existingCategories) : [];
+      
+            
+            const newCategory = {
+              c_name: newCategoryName,
+              key: categories.length + 1,
+            };
+            categories.push(newCategory);
+      
+            
+            await AsyncStorage.setItem('categories', JSON.stringify(categories));
+            
+            
+            setNewCategoryName('');
+            
+          } catch (error) {
+            console.error('Error adding category:', error);
+          }
         }
       };
 
