@@ -1,38 +1,28 @@
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import home_styles from "../Home/home_style";
 import note_create_styles from "../Create-note/create_note_style"
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Create_Category = ({ navigation, onAddCategory }) => {
-    const [newCategoryName, setNewCategoryName] = useState('');
+const Create_Category = ({ navigation }) => {
+    const [Categorylist, setCategorylist] = useState([])
     const [title, setTitle] = useState('');
 
-    const handleAddCategory = async () => {
-        if (newCategoryName) {
-          try {
-            
-            // const existingCategories = await AsyncStorage.getItem('categories');
-            // const categories = existingCategories ? JSON.parse(existingCategories) : [];
-      
-            
-            // const newCategory = {
-            //   c_name: newCategoryName,
-            //   key: categories.length + 1,
-            // };
-            // categories.push(newCategory);
-      
-            
-            // await AsyncStorage.setItem('categories', JSON.stringify(categories));
-            
-            
-            // setNewCategoryName('');
-            
-          } catch (error) {
-            console.error('Error adding category:', error);
-          }
-        }
-      };
+    useEffect(() => {
+        getCategorylist()
+    })
+
+    const getCategorylist = async() => {
+        const Categorylist = await AsyncStorage.getItem("Categorylist").then(res => JSON.parse(res))
+        setCategorylist([...Categorylist])
+    }
+
+    const addCategory = () => {
+        const categoryData = {key: Categorylist.length + 1, c_name : title};
+        AsyncStorage.setItem("Categorylist", JSON.stringify([...Categorylist, categoryData]))
+        navigation.navigate("Home")
+    }
 
     const isButtonDisabled = !(title);
 
@@ -58,14 +48,13 @@ const Create_Category = ({ navigation, onAddCategory }) => {
                     style={note_create_styles.ttl_input}
                     placeholder="Enter Title"
                     onChangeText={(text) => setTitle(text)}
-                    value={newCategoryName}
-                    onChange={(e) => setNewCategoryName(e.target.value)}
+                    value={title}
                 />
             </View>
             {/* ttl select */}
 
             <View>
-                <TouchableOpacity disabled={isButtonDisabled} onClick={handleAddCategory}>
+                <TouchableOpacity disabled={isButtonDisabled} onPress={addCategory}>
                     <Text style={[note_create_styles.create_btn, 
                                 {position : "absolute", top : 430}, 
                                 isButtonDisabled ? { opacity: 0.5 } : null]}>Create</Text>

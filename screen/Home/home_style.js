@@ -83,12 +83,9 @@ const home_styles = StyleSheet.create({
           color : "#7C7C7C",
         },
 
-        notes_container : {
-          flexDirection : 'row'
-        },
-
         note_box : {
-          width : "47%",
+          position : 'relative',
+          width : 172,
           paddingTop : 18,
           paddingBottom : 18,
           paddingLeft : 16,
@@ -107,10 +104,16 @@ const home_styles = StyleSheet.create({
           fontSize : 14
         },
 
+        deleteIcon : {
+          fontSize : 20,
+          position : 'absolute',
+          right : -10,
+        },
+
         buttonContainer: {
           position:'absolute',
-          right:10,
-          top:730,
+          right:25,
+          top:700,
           width: 50,
           height: 50,
           borderRadius: 25,

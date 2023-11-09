@@ -7,9 +7,10 @@ import RadioButton from "./components/Radio_button.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Create_note = ({ navigation }) => {
-  const [selectedCategory, setSelectedCategory] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState(2);
   const [title, setTitle] = useState('');
-  const [noteList, setNoteList] = useState([])
+  const [Categorylist, setCategorylist] = useState([]);
+  const [noteList, setNoteList] = useState([]);
   const [detail, setDetail] = useState('');
 
   const navigate_to_home = () => {
@@ -17,21 +18,27 @@ const Create_note = ({ navigation }) => {
   };
 
   useEffect(() => {
-    getNoteList()
-  })
+    getNoteList();
+    getCategorylist();
+  }, []);
 
   const getNoteList = async () => {
-    const noteList = await AsyncStorage.getItem("noteList").then(res => JSON.parse(res))
-    setNoteList([...noteList])
-  }
+    const noteList = await AsyncStorage.getItem("noteList").then(res => JSON.parse(res));
+    setNoteList([...noteList]);
+  };
 
+  const getCategorylist = async () => {
+    const Categorylist = await AsyncStorage.getItem("Categorylist").then(res => JSON.parse(res));
+    setCategorylist([...Categorylist]);
+  };
 
   const handleCreate = () => {
-    const noteData = { id: noteList.length + 1, header: title, text: detail, categoryId: selectedCategory }
-    console.log(noteData);
-    AsyncStorage.setItem("noteList", JSON.stringify([...noteList, noteData]))
-    navigation.navigate("Home")
-  }
+    const noteData = { id: noteList.length + 1, header: title, text: detail, categoryId: selectedCategory };
+    AsyncStorage.setItem("noteList", JSON.stringify([...noteList, noteData]));
+    navigate_to_home();
+  };
+
+  const filteredCategorylist = Categorylist.filter((item) => item.c_name !== "All");
 
   const isButtonDisabled = !(title && detail && selectedCategory);
 
@@ -59,8 +66,9 @@ const Create_note = ({ navigation }) => {
 
       <View>
         <Text style={[note_create_styles.cmn_ttl, { marginBottom: 20 }]}>Category</Text>
-        <FlatList
-          data={radio_categories}
+        {Categorylist.length > 0 && (
+          <FlatList
+          data={filteredCategorylist}
           horizontal
           keyExtractor={(item) => item.key.toString()}
           renderItem={({ item }) => (
@@ -72,6 +80,7 @@ const Create_note = ({ navigation }) => {
           )}
           showsHorizontalScrollIndicator={false}
         />
+        )}
       </View>
       {/* category select */}
 
@@ -95,12 +104,5 @@ const Create_note = ({ navigation }) => {
     </View>
   );
 };
-
-const radio_categories = [
-  { c_name: "Important", key: 1 },
-  { c_name: "To-Do lists", key: 2 },
-  { c_name: "Lecture Notes", key: 3 },
-  { c_name: "Shopping-list", key: 4 },
-];
 
 export default Create_note;
