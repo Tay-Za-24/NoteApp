@@ -11,7 +11,7 @@ const Home = ({ navigation }) => {
   const [noteList, setNoteList] = useState([]);
   const [Categorylist, setCategorylist] = useState([]);
   const [activeCategory, setActiveCategory] = useState('All');
-  const [longPressNoteId, setLongPressNoteId] = useState(null); // Added longPressNoteId
+  const [longPressNoteId, setLongPressNoteId] = useState(null);
   const isFocus = useIsFocused();
 
   useEffect(() => {

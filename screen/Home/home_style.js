@@ -86,6 +86,7 @@ const home_styles = StyleSheet.create({
         note_box : {
           position : 'relative',
           width : 172,
+          height : 100,
           paddingTop : 18,
           paddingBottom : 18,
           paddingLeft : 16,
