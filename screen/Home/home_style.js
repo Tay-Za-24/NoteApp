@@ -105,10 +105,71 @@ const home_styles = StyleSheet.create({
           fontSize : 14
         },
 
+        editContain : {
+          position : 'absolute',
+          right : -20,
+        },
+
+        editBtn : {
+          fontSize : 20,
+        },
+
+        deleteContain : {
+          position : 'absolute',
+          right : -20,
+          top : 40,
+        },
+
         deleteIcon : {
           fontSize : 20,
-          position : 'absolute',
-          right : -10,
+        },
+
+        alertContain : {
+          height: "100%",
+          alignItems : 'center',
+          paddingTop : 350,
+          backgroundColor : '#00000050'
+        },  
+
+        alertBox: {
+          width: 317,
+          height: 130,
+          margin: 0,
+          backgroundColor: 'white',
+          borderWidth : 1,
+          padding: 15,
+          borderRadius : 10,
+          alignItems: 'center',
+        },
+
+        btnContain : {
+          marginTop : 30,
+          flexDirection : 'row'
+        },
+
+        cancelBtn : {
+          alignItems: 'center',
+          backgroundColor : 'green',
+          width : 80,
+          height : 40,
+          paddingTop : 8,
+          borderRadius : 20,
+          marginRight : 10,
+        },
+
+        deleteBtn : {
+          alignItems: 'center',
+          backgroundColor : 'crimson',
+          width : 80,
+          height : 40,
+          paddingTop : 8,
+          borderRadius : 20,
+        },
+
+        btnText : {
+          fontWeight :'bold',
+          fontSize : 16,
+          color : 'white',
         },
 
         buttonContainer: {

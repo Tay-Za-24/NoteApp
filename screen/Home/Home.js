@@ -5,6 +5,8 @@ import { CategoryColors } from '../../util/color';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import CategoryList from '../../Components/categoryList';
+import NoteList from '../../Components/noteList'; 
 
 const Home = ({ navigation }) => {
   const [text, setText] = useState('');
@@ -18,6 +20,7 @@ const Home = ({ navigation }) => {
     if (isFocus) {
       getNoteList();
       getCategorylist();
+      setLongPressNoteId(null);
     }
   }, [isFocus]);
 
@@ -43,8 +46,9 @@ const Home = ({ navigation }) => {
     setActiveCategory(categoryName);
   };
 
-  const navigate_to_CreateNote = () => {
-    navigation.navigate('Create_Note');
+  const navigate_to_CreateNote = (noteData) => {
+    const defaultCategory = 2; 
+    navigation.navigate('Create_Note', { noteData, defaultCategory });
   };
 
   const navigate_to_CreateCategory = () => {
@@ -62,41 +66,10 @@ const Home = ({ navigation }) => {
   };
 
   const deleteNote = async (noteId) => {
-    await AsyncStorage.removeItem(`note_${noteId}`);
-  
     const updatedNotes = noteList.filter((note) => note.id !== noteId);
-    setNoteList(updatedNotes);
-  };
+    await AsyncStorage.setItem("noteList", JSON.stringify(updatedNotes));
 
-  const renderItem = ({ item, index }) => {
-    const isLongPress = item.id === longPressNoteId;
-  
-    return (
-      <TouchableOpacity
-        onLongPress={() => setLongPressNoteId(item.id)}
-      >
-        <View
-          style={[
-            home_styles.note_box,
-            { backgroundColor: getNoteBackgroundColor(index), marginRight: index % 2 === 0 ? 18 : 0 },
-          ]}
-        >
-          <View style={home_styles.text_box}>
-            <View style={{ flexDirection: 'row'}}>
-              <Text style={home_styles.note_header}>{item.header}</Text>
-              {isLongPress && (
-                <Ionicons
-                  style={home_styles.deleteIcon}
-                  name="trash-outline"
-                  onPress={() => deleteNote(item.id)}
-                />
-              )}
-            </View>
-            <Text style={{ fontSize: 12 }}>{item.text}</Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
+    setNoteList(updatedNotes);
   };
 
   const filteredNotes = noteList.filter((note) => {
@@ -146,51 +119,39 @@ const Home = ({ navigation }) => {
         )}
       </View>
       {/* Search Bar */}
-
-      <ScrollView
-        style={home_styles.categories_container}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-      >
-        {Categorylist.map((item, idx) => (
-          <TouchableOpacity
-            key={idx}
-            onPress={() => handleCategoryClick(item.c_name)}
-          >
-            <Text
-              style={[
-                home_styles.category,item.c_name === activeCategory ? home_styles.selected_category : null,
-              ]}
-            >
-              {item.c_name}
-            </Text>
-          </TouchableOpacity>
-        ))}
-        <TouchableOpacity onPress={navigate_to_CreateCategory}>
-          <Ionicons style={home_styles.add_category} name="add-circle-outline" />
-        </TouchableOpacity>
-      </ScrollView>
-
-      <View style={{ height: "70%" }}>
-      <FlatList
-        data={filteredNotes}
-        showsVerticalScrollIndicator={false}
-        renderItem={renderItem}
-        numColumns={2}
+      <CategoryList // Using the CategoryList component
+        Categorylist={Categorylist}
+        activeCategory={activeCategory}
+        handleCategoryClick={handleCategoryClick}
+        navigate_to_CreateCategory={navigate_to_CreateCategory}
       />
-      </View>
 
-      <TouchableOpacity style={home_styles.buttonContainer} onPress={navigate_to_CreateNote}>
-        <Ionicons style={home_styles.plusSign} name="add-outline" />
-      </TouchableOpacity>
+        <NoteList
+          noteList={noteList}
+          activeCategory={activeCategory}
+          text={text}
+          longPressNoteId={longPressNoteId}
+          handleLongPressNote={setLongPressNoteId}
+          deleteNote={deleteNote}
+          handleTextChange={handleTextChange}
+          clearSearchText={clearSearchText}
+          getNoteBackgroundColor={getNoteBackgroundColor}
+          filteredNotes={filteredNotes}
+          navigation={navigation}
+        />
+
+        <TouchableOpacity
+          style={home_styles.buttonContainer}
+          onPress={() => navigate_to_CreateNote({})}
+        >
+          <Ionicons style={home_styles.plusSign} name="add-outline" />
+        </TouchableOpacity>
       {/* add note button */}
     </View>
   );
 };
 
 export default Home;
-
-
 
 const categories = [
   { c_name: 'All', key: 1 },

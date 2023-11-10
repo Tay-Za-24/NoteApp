@@ -41,6 +41,11 @@ const note_create_styles = StyleSheet.create({
         padding : 10,
     },
 
+    btnContain : {
+        justifyContent : 'center',
+        flexDirection : 'row',
+    },  
+
     create_btn : {
         width : 120,
         paddingTop : 16,
@@ -50,7 +55,6 @@ const note_create_styles = StyleSheet.create({
         color : "white",
         borderRadius : 30,
         marginTop : 30,
-        left : "35%"
     }
 
 })
