@@ -16,6 +16,11 @@ const Home = ({ navigation }) => {
   const isFocus = useIsFocused();
 
   useEffect(() => {
+    // run the two lines of code under this comment to see default categories and notes.
+    //and delete it once u run it so that u can update categories and notes.
+
+    // AsyncStorage.setItem("noteList" , JSON.stringify(note_data))
+    // AsyncStorage.setItem("Categorylist" , JSON.stringify(categories))
     if (isFocus) {
       getNoteList();
       getCategorylist();
