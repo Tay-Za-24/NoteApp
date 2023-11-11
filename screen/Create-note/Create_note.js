@@ -13,6 +13,11 @@ const Create_note = ({ navigation, route }) => {
   const [noteList, setNoteList] = useState([]);
   const [detail, setDetail] = useState('');
   const [id, setID] = useState('');
+  const { noteData, defaultCategory } = route.params ;
+
+  const isEditing = !!route.params?.noteData;
+  const buttonText = isEditing ? 'Save' : 'Create';
+ const onPressFunction = isEditing ? handleChange : handleCreate;
 
   const navigate_to_home = () => {
     navigation.navigate("Home");
@@ -23,7 +28,6 @@ const Create_note = ({ navigation, route }) => {
     getCategorylist();
     setSelectedCategory(defaultCategory);
 
-    const { noteData, defaultCategory } = route.params || {};
     if (noteData) {
       setTitle(noteData.header);
       setDetail(noteData.text);
@@ -122,12 +126,11 @@ const Create_note = ({ navigation, route }) => {
       {/* note */}
 
       <View style={note_create_styles.btnContain}>
-        <TouchableOpacity disabled={isButtonDisabled} onPress={handleCreate}>
-          <Text style={[note_create_styles.create_btn, isButtonDisabled ? { opacity: 0.5 } : null]}>Create</Text>
-        </TouchableOpacity>
-        <TouchableOpacity disabled={isButtonDisabled} onPress={handleChange}>
-          <Text style={[note_create_styles.create_btn, isButtonDisabled ? { opacity: 0.5 } : null, { marginLeft: 10 }]}>Save</Text>
-        </TouchableOpacity>
+      <TouchableOpacity disabled={isButtonDisabled} onPress={onPressFunction}>
+         <Text style={[note_create_styles.create_btn, isButtonDisabled ? { opacity: 0.5 } : null]}>
+           {buttonText}
+         </Text>
+       </TouchableOpacity>
       </View>
     </View>
   );

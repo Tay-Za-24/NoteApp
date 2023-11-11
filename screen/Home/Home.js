@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity} from 'react-native';
 import home_styles from './home_style';
-import { CategoryColors } from '../../util/color';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
@@ -55,20 +54,14 @@ const Home = ({ navigation }) => {
     navigation.navigate('Create_Category');
   };
 
-  const getNoteBackgroundColor = (noteIndex) => {
-    const colorIndex = noteIndex % CategoryColors.length;
-    return CategoryColors[colorIndex];
-  };
-
   const getCategoryId = (categoryName) => {
     const category = Categorylist.find((item) => item.c_name === categoryName);
     return category ? category.key : 'All';
   };
 
-  const deleteNote = async (noteId) => {
+  const deleteNote = async (noteId) => { 
     const updatedNotes = noteList.filter((note) => note.id !== noteId);
-    await AsyncStorage.setItem("noteList", JSON.stringify(updatedNotes));
-
+    await AsyncStorage.setItem("noteList", JSON.stringify(updatedNotes)); 
     setNoteList(updatedNotes);
   };
 
@@ -79,15 +72,12 @@ const Home = ({ navigation }) => {
   
     if (activeCategory === "All") {
       return (
-        lowerCaseHeader.includes(lowerCaseSearchText) ||
-        lowerCaseText.includes(lowerCaseSearchText)
+        lowerCaseHeader.includes(lowerCaseSearchText) || lowerCaseText.includes(lowerCaseSearchText)
       );
     } else {
       const categoryId = getCategoryId(activeCategory);
       return (
-        (lowerCaseHeader.includes(lowerCaseSearchText) ||
-          lowerCaseText.includes(lowerCaseSearchText)) &&
-        (note.categoryId === categoryId)
+        (lowerCaseHeader.includes(lowerCaseSearchText) || lowerCaseText.includes(lowerCaseSearchText)) && (note.categoryId === categoryId)
       );
     }
   });
@@ -96,7 +86,7 @@ const Home = ({ navigation }) => {
     <View style={home_styles.main}>
       <View style={home_styles.header}>
         <Text style={home_styles.main_ttl}>NOTE</Text>
-        <Text style={[home_styles.main_ttl, { color: '#B0E9CA' }]}>APP</Text>
+        <Text style={[home_styles.main_ttl, { color: '#6FC6F9' }]}>APP</Text>
         <Text style={home_styles.main_ttl}>.</Text>
       </View>
       {/* Header */}
@@ -119,7 +109,7 @@ const Home = ({ navigation }) => {
         )}
       </View>
       {/* Search Bar */}
-      <CategoryList // Using the CategoryList component
+      <CategoryList 
         Categorylist={Categorylist}
         activeCategory={activeCategory}
         handleCategoryClick={handleCategoryClick}
@@ -133,9 +123,6 @@ const Home = ({ navigation }) => {
           longPressNoteId={longPressNoteId}
           handleLongPressNote={setLongPressNoteId}
           deleteNote={deleteNote}
-          handleTextChange={handleTextChange}
-          clearSearchText={clearSearchText}
-          getNoteBackgroundColor={getNoteBackgroundColor}
           filteredNotes={filteredNotes}
           navigation={navigation}
         />

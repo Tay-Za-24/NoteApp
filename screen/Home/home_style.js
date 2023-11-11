@@ -149,7 +149,7 @@ const home_styles = StyleSheet.create({
 
         cancelBtn : {
           alignItems: 'center',
-          backgroundColor : 'green',
+          backgroundColor : 'gray',
           width : 80,
           height : 40,
           paddingTop : 8,

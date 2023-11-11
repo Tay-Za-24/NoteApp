@@ -2,17 +2,22 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, FlatList, Modal } from "react-native";
 import home_styles from "../screen/Home/home_style";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { CategoryColors } from "../util/color";
 
 const NoteList = ({
   longPressNoteId,
   handleLongPressNote,
   deleteNote,
-  getNoteBackgroundColor,
   filteredNotes,
   navigation,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteNoteId, setDeleteNoteId] = useState(null);
+
+  const getNoteBackgroundColor = (noteIndex) => {
+    const colorIndex = noteIndex % 5;
+    return CategoryColors[colorIndex];
+  };
 
   const navigate_to_CreateNote = (noteData) => {
     navigation.navigate('Create_Note', { noteData });
