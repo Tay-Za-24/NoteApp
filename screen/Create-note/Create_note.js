@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, TextInput, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, TextInput, FlatList } from "react-native";
 import home_styles from "../Home/home_style";
 import note_create_styles from "./create_note_style.js";
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -7,38 +7,41 @@ import RadioButton from "./components/Radio_button.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Create_note = ({ navigation, route }) => {
- const [selectedCategory, setSelectedCategory] = useState(2);
+  const [selectedCategory, setSelectedCategory] = useState(2);
   const [title, setTitle] = useState('');
   const [Categorylist, setCategorylist] = useState([]);
   const [noteList, setNoteList] = useState([]);
   const [detail, setDetail] = useState('');
   const [id, setID] = useState('');
-  const { noteData, defaultCategory } = route.params ;
-
-  const isEditing = !!route.params?.noteData;
-  const buttonText = isEditing ? 'Save' : 'Create';
- const onPressFunction = isEditing ? handleChange : handleCreate;
+  const { noteData, defaultCategory, isEditing } = route.params;
 
   const navigate_to_home = () => {
+    console.log("Navigating to Home");
     navigation.navigate("Home");
   };
 
   useEffect(() => {
     getNoteList();
     getCategorylist();
-    setSelectedCategory(defaultCategory);
 
-    if (noteData) {
-      setTitle(noteData.header);
-      setDetail(noteData.text);
-      setID(noteData.id);
-      setSelectedCategory(noteData.categoryId);
+    if (isEditing && noteData) {
+      setTitle(noteData.header || '');
+      setDetail(noteData.text || ''); 
+      setID(noteData.id || '');       
+      setSelectedCategory(noteData.categoryId || ''); 
     } else if (defaultCategory) {
       setSelectedCategory(defaultCategory);
     }
+
     console.log("default ID : " + defaultCategory);
-    console.log("Active ID : " + noteData.categoryId);
+    console.log("Active ID : " + (noteData ? noteData.categoryId : ''));
   }, []);
+
+  const onPressFunction = () => { 
+    isEditing ? handleChange() : handleCreate();
+    console.log("Pressing");
+  }
+  const buttonText = isEditing ? 'Save' : 'Create';
 
   const getNoteList = async () => {
     const noteList = await AsyncStorage.getItem("noteList").then(res => JSON.parse(res));
@@ -50,21 +53,31 @@ const Create_note = ({ navigation, route }) => {
     setCategorylist([...Categorylist]);
   };
 
-  const handleCreate = () => {
-    const noteData = { id: noteList.length + 1, header: title, text: detail, categoryId: selectedCategory };
-    AsyncStorage.setItem("noteList", JSON.stringify([...noteList, noteData]));
-    navigate_to_home();
-  };
-
-  const handleChange = () => {
-    const updatedNoteList = noteList.map((note) =>
-      note.id === id ? { ...note, header: title, text: detail, categoryId: selectedCategory } : note
-    );
+  const handleCreate = async () => {
+    try {
+      const noteData = { id: noteList.length + 1, header: title, text: detail, categoryId: selectedCategory };
   
-    AsyncStorage.setItem("noteList", JSON.stringify(updatedNoteList));
-    navigate_to_home();
+      await AsyncStorage.setItem("noteList", JSON.stringify([...noteList, noteData]));
+      console.log("Create Working");
+      navigate_to_home();
+    } catch (error) {
+      console.error("Error creating a new note in AsyncStorage:", error);
+    }
   };
-
+  
+  const handleChange = async () => {
+    try {
+      const updatedNoteList = noteList.map((note) =>
+        note.id === id ? { ...note, header: title, text: detail, categoryId: selectedCategory } : note
+      );
+  
+      await AsyncStorage.setItem("noteList", JSON.stringify(updatedNoteList));
+      console.log("Change Working");
+      navigate_to_home();
+    } catch (error) {
+      console.error("Error updating noteList in AsyncStorage:", error);
+    }
+  };
   const filteredCategorylist = Categorylist.filter((item) => item.c_name !== "All");
 
   const isButtonDisabled = !(title && detail && selectedCategory);
@@ -126,11 +139,11 @@ const Create_note = ({ navigation, route }) => {
       {/* note */}
 
       <View style={note_create_styles.btnContain}>
-      <TouchableOpacity disabled={isButtonDisabled} onPress={onPressFunction}>
-         <Text style={[note_create_styles.create_btn, isButtonDisabled ? { opacity: 0.5 } : null]}>
-           {buttonText}
-         </Text>
-       </TouchableOpacity>
+        <TouchableOpacity disabled={isButtonDisabled} onPress={onPressFunction}>
+          <Text style={[note_create_styles.create_btn, isButtonDisabled ? { opacity: 0.5 } : null]}>
+            {buttonText}
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

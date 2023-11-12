@@ -50,9 +50,9 @@ const Home = ({ navigation }) => {
     setActiveCategory(categoryName);
   };
 
-  const navigate_to_CreateNote = (noteData) => {
+  const navigate_to_CreateNote = () => {
     const defaultCategory = 2; 
-    navigation.navigate('Create_Note', { noteData, defaultCategory });
+    navigation.navigate('Create_Note', {defaultCategory, isEditing: false });
   };
 
   const navigate_to_CreateCategory = () => {
@@ -132,12 +132,12 @@ const Home = ({ navigation }) => {
           navigation={navigation}
         />
 
-        <TouchableOpacity
-          style={home_styles.buttonContainer}
-          onPress={() => navigate_to_CreateNote({})}
-        >
-          <Ionicons style={home_styles.plusSign} name="add-outline" />
-        </TouchableOpacity>
+      <TouchableOpacity
+        style={home_styles.buttonContainer}
+        onPress={() => navigate_to_CreateNote()}
+      >
+        <Ionicons style={home_styles.plusSign} name="add-outline" />
+      </TouchableOpacity>
       {/* add note button */}
     </View>
   );

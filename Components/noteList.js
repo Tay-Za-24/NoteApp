@@ -20,7 +20,7 @@ const NoteList = ({
   };
 
   const navigate_to_CreateNote = (noteData) => {
-    navigation.navigate('Create_Note', { noteData });
+    navigation.navigate('Create_Note', { noteData, isEditing: true });
   };
 
   const renderItem = ({ item, index }) => {

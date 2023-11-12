@@ -85,17 +85,18 @@ const home_styles = StyleSheet.create({
 
         note_box : {
           position : 'relative',
-          width : 120,
-          height : 130,
+          width : 167,
+          height : 100,
           paddingTop : 18,
           paddingBottom : 18,
           paddingLeft : 16,
+          paddingRight : 16,
           borderRadius : 10,
-          marginBottom : 20,
+          marginBottom : 25,
         },
 
         text_box : {
-          width : "75%",
+          width : "90%",
         },
 
         note_header : {
@@ -131,8 +132,8 @@ const home_styles = StyleSheet.create({
         },  
 
         alertBox: {
-          width: 217,
-          height: 150,
+          width: 317,
+          height: 130,
           margin: 0,
           backgroundColor: 'white',
           borderWidth : 1,
@@ -173,8 +174,8 @@ const home_styles = StyleSheet.create({
 
         buttonContainer: {
           position:'absolute',
-          right:50,
-          top:500,
+          right:25,
+          top:700,
           width: 50,
           height: 50,
           borderRadius: 25,
