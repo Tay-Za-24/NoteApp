@@ -35,7 +35,7 @@ const note_create_styles = StyleSheet.create({
 
     detail_input : {
         backgroundColor : "#E8E8E8",
-        height : 300,
+        height : 150,
         borderRadius : 10,
         marginTop : 20,
         padding : 10,

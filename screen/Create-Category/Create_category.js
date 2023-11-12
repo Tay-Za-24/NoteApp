@@ -56,7 +56,7 @@ const Create_Category = ({ navigation }) => {
             <View style={note_create_styles.btnContain}>
                 <TouchableOpacity disabled={isButtonDisabled} onPress={addCategory}>
                     <Text style={[note_create_styles.create_btn, 
-                                {position : "absolute", top : 430, left : -50}, 
+                                {position : "absolute", top : 100, left : -50}, 
                                 isButtonDisabled ? { opacity: 0.5 } : null]}>Create</Text>
                 </TouchableOpacity>
             </View>

@@ -2,22 +2,22 @@ import { StyleSheet } from 'react-native';
 
 const home_styles = StyleSheet.create({
         main : {
-          paddingTop:80,
-          paddingLeft: 15,
-          paddingRight:15,
-          paddingBottom:10,
+          paddingTop:"20%",
+          paddingLeft: "5%",
+          paddingRight:"5%",
+          paddingBottom:"2%",
         },
 
         header:{
           flexDirection:'row',
           justifyContent: 'center',
-          marginBottom:20
+          marginBottom:"8%"
         },
 
         main_ttl : {
           fontSize:35,
           letterSpacing:5,
-          marginRight:10,
+          marginRight:"3%",
           fontWeight:'500'
         },
 
@@ -29,14 +29,14 @@ const home_styles = StyleSheet.create({
         search_icon:{
           fontSize:25,
           position:'absolute',
-          left:40,
-          top:10,
+          left:"10%",
+          top:"15%",
           color : "#7C7C7C"
         },
 
         input: {
-          height: 50,
-          width: 300,
+          height: "70%",
+          width: "85%",
           borderWidth: 1,
           paddingTop: 10,
           paddingBottom:10,
@@ -49,14 +49,14 @@ const home_styles = StyleSheet.create({
         reset_icon:{
           fontSize:30,
           position: 'absolute',
-          right: 45,
-          top: 8,
+          right: "10%",
+          top: "10%",
           color : "#7C7C7C"
         },
 
         categories_container:{
           flexDirection: 'row',
-          marginBottom : 40,
+          marginBottom : "5%",
         },
 
         category:{
@@ -85,18 +85,17 @@ const home_styles = StyleSheet.create({
 
         note_box : {
           position : 'relative',
-          width : 172,
-          height : 100,
+          width : 120,
+          height : 130,
           paddingTop : 18,
           paddingBottom : 18,
           paddingLeft : 16,
-          paddingRight : 16,
           borderRadius : 10,
-          marginBottom : 25,
+          marginBottom : 20,
         },
 
         text_box : {
-          width : "90%"
+          width : "75%",
         },
 
         note_header : {
@@ -132,8 +131,8 @@ const home_styles = StyleSheet.create({
         },  
 
         alertBox: {
-          width: 317,
-          height: 130,
+          width: 217,
+          height: 150,
           margin: 0,
           backgroundColor: 'white',
           borderWidth : 1,
@@ -174,8 +173,8 @@ const home_styles = StyleSheet.create({
 
         buttonContainer: {
           position:'absolute',
-          right:25,
-          top:700,
+          right:50,
+          top:500,
           width: 50,
           height: 50,
           borderRadius: 25,
